@@ -10,6 +10,7 @@ class Api
         "https://thecocktaildb.com/api/json/v2/9973533/"
     end
 
+    array = ["gin", "vodka", "bourbon", "scotch", "tequila"]
 
     def self.load_liquor(x)
         cool = RestClient.get(base_url + "/search.php?i=#{x}")
