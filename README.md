@@ -4,7 +4,7 @@ Welcome to the Bar!
 This is a little app that acts as a virtual bartender.
 To start the app open the terminal and type bin/run.
 There will be a dialog between you and the bartender.
-Try to answer the questions, be as natural as possible.
+When you answer the questions, be as natural as possible.
 If you want to leave the bar just type exit and you will be treated with a surprise!
 Have fun and enjoy your drinks!
 
@@ -29,7 +29,7 @@ Or install it yourself as:
 To start the app open the terminal and type bin/run.
 Follow the promts.
 Try to answer the questions, be as natural as possible.
-If you want to leave the bar just type exit.
+If you want to leave the bar just type exit.`
 
 ## Development
 
