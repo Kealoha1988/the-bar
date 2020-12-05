@@ -1,112 +1,138 @@
-require 'pry'
+
 
 
 class Cli
+    
+    attr_accessor :user, :drink, :liquor, :glass, :drink_info, :ingredient_info
 
-    attr_accessor :user, :drink, :liquor, :glass
 
-  
-
+    
+    
     def start
         scene_1
         scene_2
     end
-
-
+    
+    
     def another
-        new_drink
-
+        optional_scene
         scene_2
     end
-
-
-#user input
+    
+    
+    #user input
     def yes_no
-        gets.chomp
+        user_input = gets.chomp.downcase
+        if user_input == "yes" || user_input == "yeah" || user_input == "y" || user_input == "ya" || user_input == "yea" || user_input == "sure" || user_input == "why not" || user_input == "absolutely" || user_input == "definately" || user_input == "def" || user_input == "positive" || user_input == "i guess"
+            "yes"
+        elsif user_input == "exit"
+            bounce
+        else
+            "no"
+        end
     end
-
-
+    
+    
     def name
-        gets.chomp
+        input = gets.chomp.downcase
+        if input == "exit"
+            bounce
+        else
+            input.capitalize
+        end
     end
-
-
+    
+    
     def liquor
-        gets.chomp
+        input = gets.chomp.downcase
+        if input == "exit"
+            bounce
+        else
+            input
+        end
     end
 
+    def bounce
+        space
+        puts "Have a CHAMPERS on me!!"
+        space
+        champagne_flute
+        space
+        exit
+    end
+    
     def chose_drink
-        gets.chomp
+        input = gets.chomp
+        if input == "1"
+            "Margarita"
+        elsif input == "2"
+            "Blue Margarita"
+        elsif input == "3"
+            "Tommy's Margarita"
+        elsif input == "4"
+            "Whitecap Margarita"
+        elsif input == "5"
+            "Strawberry Margarita"
+        elsif input == "6"
+            "Smashed Watermelon Margarita"
+        elsif input == "exit"
+            bounce
+        else
+            puts "Sorry I don't believe that's a MARG!"
+            puts "Please follow the instructions!"
+            chose_drink
+        end
     end
-
+    
     
     def space
         puts "              "
     end
-
-    def liquor_options
-        liquors = ["GIN", "TEQUILA", "SCOTCH", "BOURBON", "VODKA"]
-        if liquors.include?(@liquor.upcase) == true
-         @liquor
-        else
-            sleep(1)
-         puts "Sorry I don't have that right now so you are getting vodka"
-         @liquor = "vodka"
-        end
-     end
-
-        # def valid_drink
-    #     if drink_list.include?(@drink) == true
-    #         @drink
-    #     else
-    #         puts "Ok lets try that again"
-    #         scene_2
-    #     end
-    # end
-
-
-
-
-
     
     #end of user input
-
-    
-    def liquor_info
-        Info.all.each do |x|
-            puts x.strIngredient
-        end
-    end
-    
+      
     def drink_list
-        Drink.all.each do |x|
-            puts x.strDrink
+        Recipe.all.each.with_index(1) do |x, index|
+            puts "#{index}  #{x.drink_name}"
         end
     end
     
-    def how_to
-        Recipe.all.each do |x|
-            puts x.strInstructions
-        end
+    def your_drink
+        cool = []
+        cool << Recipe.all.find{|n| n.drink_name == @drink}
+        @drink_info = cool
+    end
+end
+
+    def your_drink_how
+        @drink_info.find{|n| puts n.drink_instructions}
     end
 
-    def spell_check
-        if Drink.all.find do |x| x.strDrink.upcase == @drink.upcase
-            Api.load_info(@drink)
-        end
-        else
-            serve
-        end
+    def your_ingredients
+        @drink_info.select{|n| @ingredient_info  = n.ingredient_1, n.ingredient_2, n.ingredient_3, n.ingredient_4, n.ingredient_5, n.ingredient_6, n.ingredient_7}
     end
+
+
+
+    # def spell_check
+    #     if Drink.all.find do |x| x.strDrink.upcase == @drink.upcase
+    #         Api.load_info(@drink)
+    #     end
+    #     else
+    #         serve
+    #     end
+    # end
     
+
+
     def glassed
-        Recipe.all.each do |x| 
-            @glass = x.strGlass
-        end
+        @drink_info.find{|g| @glass = g.glass_type}
     end
-    
-    
-    
+
+
+
+
+
     
     
     def serve
@@ -123,7 +149,7 @@ class Cli
         elsif @glass == "Old-fashioned glass" or @glass == "Whiskey Glass"
             stir
             rocks_glass
-        elsif @glass == "Coupe Glass" or @glasse == "Pousse cafe glass" or @glass == "Whiskey sour glass" or @glass == "Nick and Nora Glass" or @glass == "Margarita/Coupette glass"
+        elsif @glass == "Coupe Glass" or @glass == "Pousse cafe glass" or @glass == "Whiskey sour glass" or @glass == "Nick and Nora Glass" or @glass == "Margarita/Coupette glass"
             shake
             coupe_glass
         else
@@ -189,8 +215,7 @@ puts "   \\\o / "
 puts "    ||  "
 puts "    ||  "
 puts "    ||  "
-puts "   ----   Enjoy your #{@drink} #{@user
-}!"
+puts "   ----   On the house!!"
 end
 
 def highball_glass
@@ -202,73 +227,83 @@ def highball_glass
     }!"
 end
 
-end
 
 
 
 def scene_1
-    puts "New bar who dis?"
+    space
+    space
+    puts "Hey gimmie a sec.."
+    space
+    Api.load_margarita
+    puts "Welcome to The Marg Bar who dis?"
     @user = name
     space
-    puts "Hello #{@user} what spirit would you like? I have Vodka, Gin, Bourbon, Scotch, and Tequila."
-    @liquor = liquor
-    liquor_options
+    puts "Hello #{@user}!"
+    sleep(1)
     space
-    puts "Would you like some info about #{@liquor}?"
-    if yes_no.upcase == "YES"
-        space
-        sleep(1)
-        Api.load_liquor(@liquor)
-        liquor_info
-    else
-        space
-        sleep(1)
-        puts "Haha just checking...."
-    end
-    space
+    puts "By the way if you ever need to leave just type exit"
     sleep(2)
-    puts "Would you like to see the #{@liquor} cocktails I can make for you?"
-    Api.load_cocktails(@liquor)
-    if yes_no.upcase == "YES"
-        space
-        sleep(1)
-        puts "Just one moment..."
-        space
-        drink_list
-    else
-        sleep(1)
-        puts "Fine then..."
-    end
     space
+    puts "Let me get you a menu"
+    sleep(2)
+    space
+    drink_list
+    space
+    sleep(1)
+    puts "Obviously being a MARG BAR we only serve margs..."
 end
 
 def scene_2
     sleep(1)
-    puts "So what will it be? Please pay attention to the"
+    space
+    puts "So what will it be?"
+    space
+    puts "Just type the number to the left of the marg you would like."
     @drink = chose_drink
+    your_drink
     space
-    spell_check
-    puts "Would you like to know how to make your #{@drink}?"
-    space
-    if yes_no.upcase == "YES"
+    puts "Would you like to know how to make a #{@drink}?"
+    if yes_no == "yes"
         space
-        how_to
+        puts "These are the ingredients you need"
+        space
+        sleep(1)
+        your_ingredients
+        puts @ingredient_info.uniq
+        sleep(2)
+        space
+        puts "Then you just have to"
+        sleep(1)
+        space
+        your_drink_how
+        space
+        puts "Ready to for your drink?"
+        if yes_no == "yes"
+            space
+            puts "K give me one sec"
+        else
+        space
+        puts "K take your time"
+        sleep(4)
+        puts "Alright thats long enough..."
+        end
     else
         space
         sleep(1) 
-        puts "Aight then"
+        puts "Aight then what ever"
+        space
     end
     space
-    puts "Let me get you the proper glass"
+    sleep(2)
+    puts "Let me get you the proper glass because this is NEW YORK!!"
     glassed
     space
+    sleep(2)
     serve
     space
     sleep(2)
     space
-    Drink.all.clear
-    Info.all.clear
-    Recipe.all.clear
     puts "Would you like another drink?"
     if yes_no.upcase == "YES"
         space
@@ -280,36 +315,13 @@ def scene_2
         end
     end
 
-    def new_drink
-
-        puts "So #{@user} what spirit would you like this time?"
-        @liquor = liquor
-        liquor_options
-        space
-        puts "Want me to tell you a little about #{@liquor}?"
-        if yes_no.upcase == "YES"
-            space
-            sleep(1)
-            Api.load_liquor(@liquor)
-            liquor_info
-        else
-            space
-            sleep(1)
-            puts "Cool cool...."
-        end
-        space
+    def optional_scene
         sleep(2)
-        puts "Would you like to see the #{@liquor} cocktails I can make for you?"
-        if yes_no.upcase == "YES"
-            space
-            sleep(1)
-            puts "Just one moment..."
-            Api.load_cocktails(@liquor)
-            space
-            drink_list
-        else
-            sleep(1)
-            puts "Fine then..."
-        end
+        puts "So #{@user} the last MARG was pretty good huh?"
         space
+        
+        drink_list
+        space
+        sleep(1)
+        "You know the drill"
     end
