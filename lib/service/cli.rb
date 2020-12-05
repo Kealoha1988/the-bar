@@ -23,7 +23,7 @@ class Cli
     #user input
     def yes_no
         user_input = gets.chomp.downcase
-        if user_input == "yes" || user_input == "yeah" || user_input == "y" || user_input == "ya" || user_input == "yea" || user_input == "sure" || user_input == "why not" || user_input == "absolutely" || user_input == "definately" || user_input == "def" || user_input == "positive" || user_input == "i guess"
+        if user_input == "yes" || user_input == "yeah" || user_input == "y" || user_input == "ya" || user_input == "yea" || user_input == "yep" || user_input == "sounds good" || user_input == "sure" || user_input == "why not" || user_input == "absolutely" || user_input == "definately" || user_input == "def" || user_input == "positive" || user_input == "i guess"
             "yes"
         elsif user_input == "exit"
             bounce
@@ -286,6 +286,7 @@ def scene_2
         space
         puts "K take your time"
         sleep(4)
+        space
         puts "Alright thats long enough..."
         end
     else
