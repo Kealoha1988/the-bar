@@ -23,8 +23,9 @@ class Cli
 
     def yes_no                  #used for yes/no questions
         user_input = gets.chomp.downcase
-        if user_input == "yes" || user_input == "yes please" || user_input == "ok" || user_input == "please" || user_input == "okay" || user_input == "k" || user_input == "yeah" || user_input == "y" || user_input == "ya" || user_input == "yea" || user_input == "yep" || user_input == "sounds good" || user_input == "aight" || user_input == "alright"  || user_input == "alrighty" || user_input == "sure" || user_input == "why not" || user_input == "absolutely" || user_input == "definitely" || user_input == "def" || user_input == "positive" || user_input == "i guess"
-            "yes"
+       yes_options = ["yes", "yes please","ok" , "please", "okay","k" , "yeah", "y", "ya", "yea", "yep", "sounds good", "aight", "alright", "alrighty", "sure", "why not", "absolutely", "definitely", "def", "positive", "i guess"]
+       if yes_options.find{|n| n == user_input}
+       "yes"
         elsif user_input == "exit"
             bounce
         else
@@ -107,12 +108,12 @@ end
 
 
     def your_drink_how         #take new att array and get instructions
-        @drink_info.find{|n| puts n.drink_instructions}
+        @drink_info.each{|n| puts n.drink_instructions}
     end
 
 
-    def your_ingredients        #take new att arry and make another array for ingredients
-        @drink_info.select{|n| @ingredient_info  = n.ingredient_1, n.ingredient_2, n.ingredient_3, n.ingredient_4, n.ingredient_5, n.ingredient_6, n.ingredient_7}
+    def your_ingredients      #take new att arry and make another array for ingredients
+        @drink_info.each{|n| @ingredient_info  = n.ingredient_1, n.ingredient_2, n.ingredient_3, n.ingredient_4, n.ingredient_5, n.ingredient_6, n.ingredient_7}
     end
 
     
